@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,35 @@
     <link rel="stylesheet" href="css/main.scss">
     <script src="js/main.ts" type="module"></script>
 </head>
+
 <body>
-    <p>hej</p>
+    <h1>Registrera dina kurser</h1>
+
+    <form id="courseForm">
+        <label for="courseCode">Kurskod:</label><br>
+        <input type="text" id="courseCode" required>
+        <br>
+        <label for="courseName">Kursnamn:</label><br>
+        <input type="text" id="courseName" required>
+        <br>
+        <fieldset id="progressionFieldset" required>
+            <legend>Progression:</legend>
+            <input type="radio" id="A" name="progression" value="A">
+            <label for="A">A</label><br>
+            <input type="radio" id="B" name="progression" value="B">
+            <label for="B">B</label><br>
+            <input type="radio" id="C" name="progression" value="C">
+            <label for="C">C</label>
+        </fieldset>
+        <br>
+        <label for="courseUrl">Kurs-URL:</label><br>
+        <input type="url" id="courseUrl" name="courseUrl" required>
+        <br>
+        <button type="submit">Spara kursinformationen</button>
+    </form>
+
+    <div id="newCourse"></div>
+
 </body>
+
 </html>
