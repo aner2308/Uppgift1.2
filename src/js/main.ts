@@ -16,16 +16,30 @@ function printNewCourse(course: Course): void {
 
     //Error om man lägger till samma kurskod två gånger
     if (existingCourseCodes.has(course.courseCode)) {
-        console.error("En kurs med samma kurskod finns redan.");
         errorSameCode.innerHTML = `En kurs med koden ${course.courseCode} finns redan i listan`;
         return;
     }
 
-    //tar bort Error-meddelandet om kurskoden är ny
-    errorSameCode.innerHTML = "";
-
     const newCourseEl = document.createElement("div");
-    newCourseEl.textContent = `Kurskod: ${course.courseCode}, Kursnamn: ${course.courseName}, Progression: ${course.courseProgression}, Kurs-URL: ${course.courseURL}`;
+    newCourseEl.innerHTML = 
+    `<table
+        <tr>
+            <td>Kurskod:</td>
+            <td>${course.courseCode}</td>
+        </tr>
+        <tr>
+            <td>Kursnamn:</td>
+            <td>${course.courseName}</td>
+        </tr>
+        <tr>
+            <td>Progression:</td>
+            <td>${course.courseProgression}</td>
+        </tr>
+        <tr>
+            <td>Kurs-URL:</td>
+            <td>${course.courseURL}</td>
+        </tr>
+    </table>`;
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Radera";
@@ -89,6 +103,7 @@ courseFormEl.addEventListener("submit", (event) => {
     //Rensar formuläret och tar bort eventuella felmeddelanden
     courseFormEl.reset();
     errorMsgEl.innerText = "";
+    errorSameCode.innerHTML = "";
 
     printNewCourse(newCourse);
 });
