@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1>Registrera dina kurser</h1>
+    <h1>Registrera dina kurser här</h1>
 
     <form id="courseForm">
         <label for="courseCode">Kurskod:</label><br>
@@ -19,7 +19,7 @@
         <label for="courseName">Kursnamn:</label><br>
         <input type="text" id="courseName" required>
         <br>
-        <fieldset id="progressionFieldset" required>
+        <fieldset id="progressionFieldset">
             <legend>Progression:</legend>
             <input type="radio" id="A" name="progression" value="A">
             <label for="A">A</label><br>
@@ -34,8 +34,9 @@
         <br>
         <button type="submit">Spara kursinformationen</button>
     </form>
-
-    <div id="newCourse"></div>
+    <div id="errorSameCode"></div>
+    <div id="errorMsg"></div>
+    <div id="courseList"></div>
 
 </body>
 
