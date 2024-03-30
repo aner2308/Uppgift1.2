@@ -1,1 +1,21 @@
-@use "base";
+@mixin rubrikstorlek ($storlek) {
+    @if $storlek ==1 {
+        font-size: 3.2rem;
+    }
+
+    @else if $storlek ==2 {
+        font-size: 2.4rem;
+    }
+
+    @else if $storlek ==3 {
+        font-size: 2.0rem;
+    }
+
+    @else if $storlek ==4 {
+        font-size: 1rem;
+    }
+
+    @else {
+        font-size: 2rem;
+    }
+}

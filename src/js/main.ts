@@ -7,7 +7,6 @@ interface Course {
 
 const existingCourses: Course[] = []; // Använd en array för att lagra alla kurser
 const errorMsgEl = document.getElementById("errorMsg") as HTMLDivElement;
-const errorSameCodeEl = document.getElementById("errorSameCode") as HTMLDivElement;
 const courseFormEl = document.getElementById("courseForm") as HTMLFormElement;
 
 // Funktion för att kontrollera om kurskoden redan finns
@@ -67,31 +66,32 @@ window.addEventListener("DOMContentLoaded", () => {
 function printNewCourse(course: Course): void {
 
     // Skapa element för kursen
-    const newCourseEl = document.createElement("div");
+    const newCourseEl = document.createElement("article");
     newCourseEl.id = course.courseCode;
     newCourseEl.innerHTML = `
         <table>
             <tr>
-                <td>Kurskod:</td>
+                <td><strong>Kurskod:</strong></td>
                 <td>${course.courseCode}</td>
             </tr>
             <tr>
-                <td>Kursnamn:</td>
+                <td><strong>Kursnamn:</strong></td>
                 <td>${course.courseName}</td>
             </tr>
             <tr>
-                <td>Progression:</td>
+                <td><strong>Progression:</strong></td>
                 <td>${course.courseProgression}</td>
             </tr>
             <tr>
-                <td>Kurs-URL:</td>
-                <td>${course.courseURL}</td>
+                <td><strong>Kurs-URL:</strong></td>
+                <td><a href="${course.courseURL}">Klicka här</a></td>
             </tr>
         </table>`;
 
     // Skapa knapp för att ta bort kursen
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Radera";
+    deleteButton.id = "deleteBtn";
     deleteButton.addEventListener("click", () => {
         newCourseEl.remove();
         removeCourse(course.courseCode);

@@ -1,2 +1,136 @@
 @use "base";
 @use "components";
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, base.$bg-color-1, base.$bg-color-2);
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    color: base.$text-color;
+    @include components.rubrikstorlek(2);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 50px;
+    color: base.$text-color;
+    @include components.rubrikstorlek(3);
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    color: base.$text-color;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="url"] {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+fieldset {
+    margin-bottom: 20px;
+    border: none;
+}
+
+#progressionFieldset {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+}
+
+#progressionFieldset label {
+    margin-right: 10px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: base.$button-color;
+    color: base.$text-color-light;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+
+
+
+button[type="submit"]:hover {
+    background-color: #0ab104;
+}
+
+#deleteBtn {
+    background-color: base.$button-color; 
+    color: base.$text-color-light; 
+    border: none; 
+    padding: 8px 16px;
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.5s ease;
+}
+
+#deleteBtn:hover {
+    background-color: #d00d0d; /* Ändra bakgrundsfärg vid hover */
+}
+
+#error {
+    color: red;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+article {
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: base.$box-color;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+table td {
+    color: base.$text-color;
+    padding: 5px;
+}
+
+#errorMsg {
+    margin: auto;
+    text-align: center;
+}
+
+.course {
+    background-color: base.$box-color;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.course:hover {
+    transform: translateY(-5px);
+}
+
