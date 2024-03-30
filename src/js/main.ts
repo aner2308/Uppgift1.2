@@ -1,10 +1,3 @@
-const courseFormEl = document.getElementById("courseForm") as HTMLFormElement;
-const errorMsg = document.getElementById("errorMsg") as HTMLDivElement;
-const errorSameCode = document.getElementById("errorSameCode") as HTMLDivElement;
-
-const existingCourseCodes: Set<string> = new Set();
-
-//Interface för kurs
 interface Course {
     courseCode: string;
     courseName: string;
@@ -12,87 +5,126 @@ interface Course {
     courseURL: string;
 }
 
-function printNewCourse(course: Course): void {
+const existingCourses: Course[] = []; // Använd en array för att lagra alla kurser
+const errorMsgEl = document.getElementById("errorMsg") as HTMLDivElement;
+const errorSameCodeEl = document.getElementById("errorSameCode") as HTMLDivElement;
 
-    //Error om man lägger till samma kurskod två gånger
-    if (existingCourseCodes.has(course.courseCode)) {
-        errorSameCode.innerHTML = `En kurs med koden ${course.courseCode} finns redan i listan`;
-        return;
+// Funktion för att kontrollera om kurskoden redan finns
+function isDuplicateCourseCode(courseCode: string): boolean {
+    return existingCourses.some(course => course.courseCode === courseCode);
+}
+
+// Funktion för att lägga till en ny kurs och spara den i localStorage
+function addCourse(course: Course): void {
+    existingCourses.push(course);
+    updateLocalStorage();
+}
+
+// Funktion för att ta bort en kurs och uppdatera localStorage
+function removeCourse(courseCode: string): void {
+    const index = existingCourses.findIndex(course => course.courseCode === courseCode);
+    if (index !== -1) {
+        existingCourses.splice(index, 1);
+        updateLocalStorage();
     }
+}
 
+// Funktion för att uppdatera localStorage med alla kurser
+function updateLocalStorage(): void {
+    localStorage.setItem("courses", JSON.stringify(existingCourses));
+}
+
+// Funktion för att ladda kurser från localStorage när sidan laddas
+function loadCoursesFromLocalStorage(): void {
+    const savedCourses = localStorage.getItem("courses");
+    if (savedCourses) {
+        existingCourses.push(...JSON.parse(savedCourses));
+        // Uppdatera DOM med de sparade kurserna
+        existingCourses.forEach(course => printNewCourse(course));
+    }
+}
+
+// Kör funktionen för att ladda sparade kurser när sidan laddas
+window.addEventListener("DOMContentLoaded", () => {
+    loadCoursesFromLocalStorage();
+});
+
+// Funktion för att skriva ut en kurs i DOM:en
+function printNewCourse(course: Course): void {
+    
+    // Skapa element för kursen
     const newCourseEl = document.createElement("div");
-    newCourseEl.innerHTML = 
-    `<table
-        <tr>
-            <td>Kurskod:</td>
-            <td>${course.courseCode}</td>
-        </tr>
-        <tr>
-            <td>Kursnamn:</td>
-            <td>${course.courseName}</td>
-        </tr>
-        <tr>
-            <td>Progression:</td>
-            <td>${course.courseProgression}</td>
-        </tr>
-        <tr>
-            <td>Kurs-URL:</td>
-            <td>${course.courseURL}</td>
-        </tr>
-    </table>`;
+    newCourseEl.innerHTML = `
+        <table>
+            <tr>
+                <td>Kurskod:</td>
+                <td>${course.courseCode}</td>
+            </tr>
+            <tr>
+                <td>Kursnamn:</td>
+                <td>${course.courseName}</td>
+            </tr>
+            <tr>
+                <td>Progression:</td>
+                <td>${course.courseProgression}</td>
+            </tr>
+            <tr>
+                <td>Kurs-URL:</td>
+                <td>${course.courseURL}</td>
+            </tr>
+        </table>`;
 
+    // Skapa knapp för att ta bort kursen
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Radera";
     deleteButton.addEventListener("click", () => {
         newCourseEl.remove();
-        existingCourseCodes.delete(course.courseCode); // Ta bort kurskoden från listan när den tas bort
+        removeCourse(course.courseCode);
     });
 
+    // Lägg till knappen i kursens element
     newCourseEl.appendChild(deleteButton);
 
+    // Lägg till kursens element i DOM:en
     const courseListEl = document.getElementById("courseList");
     if (courseListEl) {
         courseListEl.appendChild(newCourseEl);
     }
-
-    existingCourseCodes.add(course.courseCode); // Lägg till kurskoden i listan över befintliga kurskoder
 }
 
+const courseFormEl = document.getElementById("courseForm") as HTMLFormElement;
 
-//Funktion för knappen i formuläret, samt vad som händer.
 courseFormEl.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    //Hämtar värden från formulär
+    // Hämta värden från formuläret
     const courseCodeInput = document.getElementById("courseCode") as HTMLInputElement;
     const courseNameInput = document.getElementById("courseName") as HTMLInputElement;
     const progressionRadios = document.getElementsByName("progression") as NodeListOf<HTMLInputElement>;
     const courseURLInput = document.getElementById("courseUrl") as HTMLInputElement;
 
-    //Kontrollerar att alla textfällt är ifyllda
-    if (courseCodeInput.value.trim() === "" || courseNameInput.value.trim() === "" || courseURLInput.value.trim() === "") {
-        console.error("Fyll i alla fält.");
-        return; // Avbryt funktionen om något textfält är tomt
-    }
-
-    let courseProgression: string | undefined;
-    const errorMsgEl = document.getElementById("errorMsg");
-
-    // Loopa genom alla radioknappar för progression och hitta den markerade
-    for (const radio of progressionRadios) {
-        if (radio.checked) {
-            courseProgression = radio.value;
-            break; // Avsluta loopen när den markerade radioknappen hittas
+        // Kontrollera om kurskoden redan finns
+        const courseCode = courseCodeInput.value.trim();
+        if (isDuplicateCourseCode(courseCode)) {
+            errorSameCodeEl.innerText = `En kurs med koden ${courseCode} finns redan.`;
+            return;
+        } else {
+            errorSameCodeEl.innerText = "";
         }
-    }
 
-    if (courseProgression === undefined) {
-        // Om ingen radioknapp är markerad visas felmeddelande
-        console.error("Välj en progression.");
-        errorMsgEl.innerText = "Välj en progression.";
-        return; // Avbryt funktionen om ingen radioknapp är markerad
-    }
+        // Kontrollera om någon radioknapp är markerad
+        const isChecked = Array.from(progressionRadios).some(radio => radio.checked);
 
+        // Om ingen radioknapp är markerad, visa felmeddelande och avbryt
+        if (!isChecked) {
+            errorMsgEl.innerHTML = `<p>Välj en progression.<p>`;
+            return;
+        } else {
+            errorMsgEl.innerHTML = `<p>Vänligen fyll i din kurs.<p>`;
+        }
+
+    // Validering och skapa ny kurs
+    const courseProgression = Array.from(progressionRadios).find(radio => radio.checked)?.value || "";
     const newCourse: Course = {
         courseCode: courseCodeInput.value,
         courseName: courseNameInput.value,
@@ -100,12 +132,10 @@ courseFormEl.addEventListener("submit", (event) => {
         courseURL: courseURLInput.value,
     };
 
-    //Rensar formuläret och tar bort eventuella felmeddelanden
-    courseFormEl.reset();
-    errorMsgEl.innerText = "";
-    errorSameCode.innerHTML = "";
-
+    // Lägg till kursen i DOM och localStorage
     printNewCourse(newCourse);
+    addCourse(newCourse);
+
+    // Rensa formuläret
+    courseFormEl.reset();
 });
-
-
