@@ -24,11 +24,7 @@ function addCourse(course: Course): void {
             return; // Avbryt om användaren väljer att inte spara över den befintliga kursen
         }
         // Ta bort den befintliga kursen med samma kurskod
-        const existingCourseEl = document.getElementById(course.courseCode);
-        if (existingCourseEl) {
-            existingCourseEl.remove(); // Ta bort den tidigare lagrade kursen från DOM:en
-        }
-        removeCourse(course.courseCode); // Ta bort den befintliga kursen från listan och localStorage
+        removeCourse(course.courseCode);
     }
     existingCourses.push(course);
     updateLocalStorage();
@@ -65,7 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Funktion för att skriva ut en kurs i DOM:en
 function printNewCourse(course: Course): void {
-
+    
     // Skapa element för kursen
     const newCourseEl = document.createElement("div");
     newCourseEl.id = course.courseCode;
@@ -117,16 +113,25 @@ courseFormEl.addEventListener("submit", (event) => {
     const progressionRadios = document.getElementsByName("progression") as NodeListOf<HTMLInputElement>;
     const courseURLInput = document.getElementById("courseUrl") as HTMLInputElement;
 
-    // Kontrollera om någon radioknapp är markerad
-    const isChecked = Array.from(progressionRadios).some(radio => radio.checked);
+        // Kontrollera om kurskoden redan finns
+       /* const courseCode = courseCodeInput.value.trim();
+        if (isDuplicateCourseCode(courseCode)) {
+            errorSameCodeEl.innerHTML = `<p id="error">En kurs med koden ${courseCode} finns redan.</p>`;
+            return;
+        } else {
+            errorSameCodeEl.innerHTML = "";
+        }*/
 
-    // Om ingen radioknapp är markerad, visa felmeddelande och avbryt
-    if (!isChecked) {
-        errorMsgEl.innerHTML = `<p id="error">Välj en progression.</p>`;
-        return;
-    } else {
-        errorMsgEl.innerHTML = `<p>...</p>`;
-    }
+        // Kontrollera om någon radioknapp är markerad
+        const isChecked = Array.from(progressionRadios).some(radio => radio.checked);
+
+        // Om ingen radioknapp är markerad, visa felmeddelande och avbryt
+        if (!isChecked) {
+            errorMsgEl.innerHTML = `<p id="error">Välj en progression.</p>`;
+            return;
+        } else {
+            errorMsgEl.innerHTML = `<p>Vänligen fyll i din kurs.</p>`;
+        }
 
     // Validering och skapa ny kurs
     const courseProgression = Array.from(progressionRadios).find(radio => radio.checked)?.value || "";
