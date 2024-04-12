@@ -91,7 +91,6 @@ function printNewCourse(course: Course): void {
     // Skapa knapp för att ta bort kursen
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Radera";
-    deleteButton.id = "deleteBtn";
     deleteButton.type = "button";
     deleteButton.addEventListener("click", () => {
         newCourseEl.remove();

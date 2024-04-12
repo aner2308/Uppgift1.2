@@ -110,6 +110,20 @@ article {
     background-color: base.$box-color;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+    button {
+        background-color: base.$button-color; 
+        color: base.$text-color-light; 
+        border: none; 
+        padding: 8px 16px;
+        border-radius: 4px; 
+        cursor: pointer; 
+        transition: background-color 0.5s ease;
+    }
+    
+    button:hover {
+        background-color: #d00d0d; /* Ändra bakgrundsfärg vid hover */
+    }
 }
 
 table td {
