@@ -117,6 +117,15 @@ courseFormEl.addEventListener("submit", (event) => {
     const progressionRadios = document.getElementsByName("progression") as NodeListOf<HTMLInputElement>;
     const courseURLInput = document.getElementById("courseUrl") as HTMLInputElement;
 
+    // Kontrollera om något fält är tomt eller bara innehåller mellanslag
+    if (courseCodeInput.value.trim() === "" || courseNameInput.value.trim() === "" || courseURLInput.value.trim() === "") {
+        // Visa ett felmddelande om något fält är tomt
+        errorMsgEl.innerHTML = `<p id="error">Alla fält måste vara ifyllda.</p>`;
+        return;
+    } else {
+        errorMsgEl.innerHTML = `<p>...</p>`;
+    }
+
     // Kontrollera om någon radioknapp är markerad
     const isChecked = Array.from(progressionRadios).some(radio => radio.checked);
 
