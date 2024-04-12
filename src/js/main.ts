@@ -92,6 +92,7 @@ function printNewCourse(course: Course): void {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Radera";
     deleteButton.id = "deleteBtn";
+    deleteButton.type = "button";
     deleteButton.addEventListener("click", () => {
         newCourseEl.remove();
         removeCourse(course.courseCode);
